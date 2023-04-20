@@ -1,0 +1,5 @@
+[https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/guides/cloud_init](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/guides/cloud_init)
+[https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/resources/vm_qemu#provision-through-cloud-init](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/resources/vm_qemu#provision-through-cloud-init)
+[https://registry.terraform.io/providers/Telmate/proxmox/latest/docs#creating-the-connection-via-username-and-api-token](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs#creating-the-connection-via-username-and-api-token)
+[https://yetiops.net/posts/proxmox-terraform-cloudinit-saltstack-prometheus/#creating-a-template](https://yetiops.net/posts/proxmox-terraform-cloudinit-saltstack-prometheus/#creating-a-template)
+[http://cdimage.debian.org/cdimage/openstack/current-10/debian-10-openstack-amd64.qcow2](http://cdimage.debian.org/cdimage/openstack/current-10/debian-10-openstack-amd64.qcow2)
