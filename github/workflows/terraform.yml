@@ -1,0 +1,39 @@
+name: Deploy Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0
+
+    - name: Go to the Terraform directory
+      run: cd terraform
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Validate
+      run: terraform validate
+
+    - name: Terraform Plan
+      run: terraform plan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      env:
+        PM_API_URL: ${{ secrets.PM_API_URL }}
+        PM_USER: ${{ secrets.PM_USER }}
+        PM_PASSWORD: ${{ secrets.PM_PASSWORD }}
+        PM_TLS_INSECURE: ${{ secrets.PM_TLS_INSECURE }}
