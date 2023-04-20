@@ -19,7 +19,7 @@ jobs:
         terraform_version: 1.0.0
 
     - name: Go to the Terraform directory
-      run: cd terraform
+      run: cd terraform/proxmox/clone
 
     - name: Terraform Init
       run: terraform init
@@ -37,3 +37,4 @@ jobs:
         PM_USER: ${{ secrets.PM_USER }}
         PM_PASSWORD: ${{ secrets.PM_PASSWORD }}
         PM_TLS_INSECURE: ${{ secrets.PM_TLS_INSECURE }}
+        PM_NODE: ${{ secrets.PM_NODE }}
