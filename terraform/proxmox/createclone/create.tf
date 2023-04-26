@@ -29,7 +29,7 @@ resource "null_resource" "prepare_iso" {
     command = "./prepare_template.sh"
     }
     triggers = {
-    always_run = timestamp()
+        always_run = timestamp()
     }
 }
 
@@ -45,57 +45,47 @@ resource "proxmox_vm_qemu" "template" {
     cpu      = "host"
 
     network {
-    model  = "virtio"
-    bridge = "vmbr0"
+        model  = "virtio"
+        bridge = "vmbr0"
     }
 
     disk {
-    type    = "scsi"
-    storage = local.vm_storage
-    size    = local.vm_disk_size
-    cache   = "writeback"
-    format  = "qcow2"
-    }
-
-    cdrom {
-    type    = "scsi"
-    storage = local.iso_storage
-    file    = local.iso_file
-    }
-
-    serial {
-    type = "socket"
+        type    = "scsi"
+        storage = local.vm_storage
+        size    = local.vm_disk_size
+        cache   = "writeback"
+        format  = "qcow2"
     }
 
     lifecycle {
-    ignore_changes = [
-        network,
-        disk,
-        cdrom
-    ]
+        ignore_changes = [
+            network,
+            disk,
+        ]
     }
     # Add the remote-exec provisioner to install Docker and Docker Compose
     provisioner "remote-exec" {
-    inline = [
-        "until ping -c1 ${self.ipconfig0} &>/dev/null; do sleep 1; done", # Wait for the VM to be reachable
-        "sudo apt-get update",
-        "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
-        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-        "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
-        "sudo apt-get update",
-        "sudo apt-get install -y docker-ce",
-        "sudo systemctl enable docker",
-        "sudo systemctl start docker",
-        "sudo curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
-        "sudo chmod +x /usr/local/bin/docker-compose",
-        "sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose"
-    ]
+        inline = [
+            "until ping -c1 ${self.ipconfig0} &>/dev/null; do sleep 1; done", # Wait for the VM to be reachable
+            "sudo apt-get update",
+            "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+            "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+            "sudo apt-get update",
+            "sudo apt-get install -y docker-ce",
+            "sudo systemctl enable docker",
+            "sudo systemctl start docker",
+            "sudo curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
+            "sudo chmod +x /usr/local/bin/docker-compose",
+            "sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose"
+        ]
 
-    connection {
-        type        = "ssh"
-        host        = self.ipconfig0
-        user        = "root"
-        private_key = file("~/.ssh/id_rsa")
+        connection {
+            type        = "ssh"
+            host        = self.ipconfig0
+            user        = "root"
+            private_key = file("~/.ssh/id_rsa")
+        }
     }
 }
 
